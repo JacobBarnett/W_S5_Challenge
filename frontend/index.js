@@ -71,6 +71,44 @@ async function sprintChallenge5() {
   // 👇 ==================== TASK 3 START ==================== 👇
 
   for (let learner of learners) {
+    const renderLearners = async () => {
+      const learners = await fetchData();
+
+      const cardsContainer = document.querySelector(".cards");
+      const info = document.querySelector(".info");
+      info.textContent = "No learner is selected";
+
+      learners.forEach((learner) => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        const heading = document.createElement("h3");
+        heading.textContent = learner.fullName;
+
+        const email = document.createElement("div");
+        email.classList.add("email");
+        email.textContent = learner.email;
+
+        const mentorsHeading = document.createElement("h4");
+        mentorsHeading.textContent = "Mentors";
+        const mentorsList = document.createElement("ul");
+
+        learner.mentors.forEach((mentor) => {
+          const mentorItem = document.createElement("li");
+          mentorItem.textContent = mentor;
+          mentorsList.appendChild(mentorItem);
+        });
+
+        card.appendChild(heading);
+        card.appendChild(email);
+        card.appendChild(mentorsHeading);
+        card.appendChild(mentorsList);
+
+        cardsContainer.appendChild(card);
+      });
+    };
+
+    renderLearners();
     // looping over each learner object
 
     // 🧠 Flesh out the elements that describe each learner
