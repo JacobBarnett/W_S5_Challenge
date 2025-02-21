@@ -18,15 +18,8 @@ async function sprintChallenge5() {
     const response = await axios.get("http://localhost:3003/api/mentors");
     return response.data;
   };
-  const fetchData = async () => {
-    let learners = await getLearners(); // Get learners data
-    let mentors = await getMentors(); // Get mentors data
-    return { learners, mentors };
-  };
-
-  fetchData().then(({ learners, mentors }) => {
-    // Continue with Task 2 below
-  });
+  let mentors = [getMentors]; // fix this
+  let learners = [getLearners]; // fix this
 
   // 👆 ==================== TASK 1 END ====================== 👆
 
@@ -44,26 +37,6 @@ async function sprintChallenge5() {
   //     "Grace Hopper"
   //   ]`
   // }
-  fetchData().then(({ learners, mentors }) => {
-    const updatedLearners = learners.map((learner) => {
-      // Get the mentors' names for this learner
-      const mentorNames = learner.mentorIds
-        .map((mentorId) => {
-          const mentor = mentors.find((m) => m.id === mentorId); // Find the mentor by ID
-          return mentor ? mentor.fullName : null; // Return the mentor's full name
-        })
-        .filter(Boolean); // Remove null values if any mentor is not found
-
-      return {
-        id: learner.id,
-        fullName: learner.fullName,
-        email: learner.email,
-        mentors: mentorNames,
-      };
-    });
-
-    console.log(updatedLearners); // Display the updated learners with mentor names
-  });
 
   // 👆 ==================== TASK 2 END ====================== 👆
 
