@@ -48,6 +48,8 @@ async function sprintChallenge5() {
 
   const combinedLearners = learners.map((learner) => {
     console.log(`Processing Learner: ${learner.fullName}`);
+    console.log("Learner mentor IDs:", learner.mentorIds); // Log mentor IDs to see what's happening
+
     const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
     if (mentorIds.length === 0) {
       console.log(`No mentor IDs found for Learner: ${learner.fullName}`);
@@ -75,6 +77,8 @@ async function sprintChallenge5() {
       console.log(`Assigning default mentor for Learner: ${learner.fullName}`);
       mentorNames.push("No mentor");
     }
+
+    console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
 
     console.log(
       `Number of mentors for ${learner.fullName}:`,
