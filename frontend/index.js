@@ -37,19 +37,27 @@ async function sprintChallenge5() {
   // We need to replace the mentor IDs with the mentor names.
 
   const combinedLearners = learners.map((learner) => {
-    // Log the learner's details and mentorIds for debugging
     console.log(`Processing Learner: ${learner.fullName}`);
     console.log("Learner mentor IDs:", learner.mentorIds);
 
-    // Check if mentorIds exist and are an array
     const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
 
-    // Log mentors to make sure they are available
+    // Enhanced Logging: Check if the mentorIds are actually numbers
+    mentorIds.forEach((mentorId, idx) => {
+      console.log(`Checking Mentor ID ${mentorId} at index ${idx}...`);
+      if (typeof mentorId !== "number") {
+        console.warn(
+          `Warning: mentorId at index ${idx} is not a number. It's:`,
+          typeof mentorId
+        );
+      }
+    });
+
+    // Log the mentors and their ids
     mentors.forEach((mentor) => {
       console.log(`Mentor: ${mentor.fullName}, ID: ${mentor.id}`);
     });
 
-    // Now map the mentor IDs to mentor names
     const mentorNames = mentorIds
       .map((mentorId) => {
         const mentor = mentors.find((m) => m.id === mentorId);
@@ -66,9 +74,8 @@ async function sprintChallenge5() {
           return null;
         }
       })
-      .filter(Boolean); // Remove null values, if any mentor was not found
+      .filter(Boolean); // Remove null values if any mentor was not found
 
-    // Log the final mentor names for each learner
     console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
 
     return {
