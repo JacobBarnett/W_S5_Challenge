@@ -7,20 +7,32 @@ async function sprintChallenge5() {
   // 👇 ==================== TASK 1 START ==================== 👇
 
   // 🧠 Use Axios to GET learners and mentors.
-  const getLearners = async () => {
-    const response = await axios.get("http://localhost:3003/api/learners");
-    return response.data;
+  const getMentors = async () => {
+    try {
+      const response = await axios.get("http://localhost:3003/api/mentors");
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+      console.error("Error fetching mentors:", error);
+      return []; // Return empty array in case of error
+    }
   };
 
-  const getMentors = async () => {
-    const response = await axios.get("http://localhost:3003/api/mentors");
-    return response.data;
+  const getLearners = async () => {
+    try {
+      const response = await axios.get("http://localhost:3003/api/learners");
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+      console.error("Error fetching learners:", error);
+      return []; // Return empty array in case of error
+    }
   };
 
   // We need to await both getLearners and getMentors and assign the results to variables
   const mentors = await getMentors(); // Fix this: fetching mentors data
   const learners = await getLearners(); // Fix this: fetching learners data
 
+  console.log("Mentors:", mentors);
+  console.log("Learners:", learners);
   // 👆 ==================== TASK 1 END ====================== 👆
 
   // 👇 ==================== TASK 2 START ==================== 👇
@@ -29,21 +41,24 @@ async function sprintChallenge5() {
   // At this point, the learner objects only have the mentors' IDs.
   // We need to replace the mentor IDs with the mentor names.
 
-  const combinedLearners = learners.map((learner) => {
-    const mentorNames = learner.mentorIds
-      .map((mentorId) => {
-        const mentor = mentors.find((m) => m.id === mentorId);
-        return mentor ? mentor.fullName : null; // Replace ID with full name of mentor
-      })
-      .filter(Boolean); // Filter out any null values (in case some mentorIds are invalid)
+  const combinedLearners =
+    Array.isArray(learners) && Array.isArray(mentors)
+      ? learners.map((learner) => {
+          const mentorNames = learner.mentorIds
+            .map((mentorId) => {
+              const mentor = mentors.find((m) => m.id === mentorId);
+              return mentor ? mentor.fullName : null;
+            })
+            .filter(Boolean);
 
-    return {
-      id: learner.id,
-      fullName: learner.fullName,
-      email: learner.email,
-      mentors: mentorNames,
-    };
-  });
+          return {
+            id: learner.id,
+            fullName: learner.fullName,
+            email: learner.email,
+            mentors: mentorNames,
+          };
+        })
+      : [];
 
   // 👆 ==================== TASK 2 END ====================== 👆
 
