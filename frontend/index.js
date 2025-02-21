@@ -94,6 +94,8 @@ async function sprintChallenge5() {
     const mentorsList = document.createElement("ul");
     mentorsList.classList.add("mentors-list");
 
+    mentorsList.style.display = "none";
+
     // Loop through the mentors and create <li> elements for each mentor
     learner.mentors.forEach((mentor) => {
       const mentorItem = document.createElement("li");
