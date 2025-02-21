@@ -37,40 +37,45 @@ async function sprintChallenge5() {
   // We need to replace the mentor IDs with the mentor names.
 
   const combinedLearners = learners.map((learner) => {
-    console.log(`Learner: ${learner.fullName}, Mentor IDs:`, learner.mentorIds);
+    // Log the learner's details and mentorIds for debugging
+    console.log(`Processing Learner: ${learner.fullName}`);
+    console.log("Learner mentor IDs:", learner.mentorIds);
 
+    // Check if mentorIds exist and are an array
     const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
 
-    // Log mentors to see if they have the expected id
+    // Log mentors to make sure they are available
     mentors.forEach((mentor) => {
       console.log(`Mentor: ${mentor.fullName}, ID: ${mentor.id}`);
     });
 
+    // Now map the mentor IDs to mentor names
     const mentorNames = mentorIds
       .map((mentorId) => {
         const mentor = mentors.find((m) => m.id === mentorId);
 
         if (mentor) {
           console.log(
-            `Found mentor: ${mentor.fullName} for learner: ${learner.fullName}`
+            `Found Mentor: ${mentor.fullName} for Learner: ${learner.fullName}`
           );
           return mentor.fullName;
         } else {
           console.log(
-            `No mentor found for ID: ${mentorId} (learner: ${learner.fullName})`
+            `No Mentor found for Mentor ID: ${mentorId} (Learner: ${learner.fullName})`
           );
           return null;
         }
       })
-      .filter(Boolean); // Remove null values
+      .filter(Boolean); // Remove null values, if any mentor was not found
 
-    console.log("Mentors for learner:", learner.fullName, mentorNames);
+    // Log the final mentor names for each learner
+    console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
 
     return {
       id: learner.id,
       fullName: learner.fullName,
       email: learner.email,
-      mentors: mentorNames, // Return an array of mentor names
+      mentors: mentorNames, // This will be an array of mentor names
     };
   });
 
