@@ -10,33 +10,33 @@ async function sprintChallenge5() {
   // 🧠 Use Axios to GET learners and mentors.
   const getLearners = async () => {
     const response = await axios.get("http://localhost:3003/api/learners");
-    console.log("Learners Data:", response.data); // Log the learners data for inspection
     return response.data;
   };
 
   const getMentors = async () => {
     const response = await axios.get("http://localhost:3003/api/mentors");
-    console.log("Mentors Data:", response.data); // Log the mentors data for inspection
     return response.data;
   };
 
-  // 👆 ==================== TASK 1 & 2 FIX ====================== 👆
-
-  // Assuming you're using Jest for testing
-  test("learners have mentors correctly mapped", async () => {
-    // First, get the data by calling the functions
+  // 🧠 This function should be called to process the learners and mentors
+  const processLearnersAndMentors = async () => {
+    // Fetch mentors and learners
     const mentors = await getMentors();
     const learners = await getLearners();
 
-    // Combine learners and mentors
+    if (!Array.isArray(learners) || !Array.isArray(mentors)) {
+      throw new Error("The API response did not return valid data.");
+    }
+
+    // Combine learners and mentors - map mentor IDs to mentor names
     const processedLearners = learners.map((learner) => {
-      const mentorIds = learner.mentorIds || [];
+      const mentorIds = learner.mentorIds || []; // fallback to empty array if undefined
       const mentorNames = mentorIds
         .map((mentorId) => {
           const mentor = mentors.find((m) => m.id === mentorId);
           return mentor ? mentor.fullName : null;
         })
-        .filter((name) => name !== null);
+        .filter((name) => name !== null); // Filter out null values
       return {
         id: learner.id,
         fullName: learner.fullName,
@@ -45,20 +45,17 @@ async function sprintChallenge5() {
       };
     });
 
-    // Now, 'processedLearners' will be your 'received' data
-    const expectedLearners = [
-      {
-        id: 6,
-        fullName: "Bob Johnson",
-        email: "bob.johnson@example.com",
-        mentors: ["Bill Gates", "Grace Hopper"],
-      },
-      // Add other expected learner objects here as needed
-    ];
+    return processedLearners;
+  };
 
-    // Perform the test with .toEqual() to check deep equality
-    expect(processedLearners).toEqual(expectedLearners);
-  });
+  // Now, you can call the function where needed
+  processLearnersAndMentors()
+    .then((processedLearners) => {
+      console.log("Processed Learners:", processedLearners); // Log to see the final result
+    })
+    .catch((error) => {
+      console.error("Error processing learners and mentors:", error);
+    });
 
   // 👇 ==================== TASK 3 ==================== 👇
 
@@ -67,7 +64,7 @@ async function sprintChallenge5() {
   info.textContent = "No learner is selected";
 
   // Loop over each learner object
-  for (let learner of learner) {
+  for (let learner of learners) {
     const card = document.createElement("div"); // Create a card div for each learner
     card.classList.add("card"); // Add 'card' class to the div
 
