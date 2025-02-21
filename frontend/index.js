@@ -39,29 +39,14 @@ async function sprintChallenge5() {
   const combinedLearners = learners.map((learner) => {
     console.log(`Processing Learner: ${learner.fullName}`);
     console.log("Learner mentor IDs:", learner.mentorIds);
-
     const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
-
-    // Enhanced Logging: Check if the mentorIds are actually numbers
-    mentorIds.forEach((mentorId, idx) => {
-      console.log(`Checking Mentor ID ${mentorId} at index ${idx}...`);
-      if (typeof mentorId !== "number") {
-        console.warn(
-          `Warning: mentorId at index ${idx} is not a number. It's:`,
-          typeof mentorId
-        );
-      }
-    });
-
-    // Log the mentors and their ids
-    mentors.forEach((mentor) => {
-      console.log(`Mentor: ${mentor.fullName}, ID: ${mentor.id}`);
-    });
+    if (mentorIds.length === 0) {
+      console.log(`No mentor IDs found for Learner: ${learner.fullName}`);
+    }
 
     const mentorNames = mentorIds
       .map((mentorId) => {
         const mentor = mentors.find((m) => m.id === mentorId);
-
         if (mentor) {
           console.log(
             `Found Mentor: ${mentor.fullName} for Learner: ${learner.fullName}`
@@ -74,7 +59,13 @@ async function sprintChallenge5() {
           return null;
         }
       })
-      .filter(Boolean); // Remove null values if any mentor was not found
+      .filter(Boolean); // Remove nulls
+
+    // If no mentors were found, we default to "No mentor"
+    if (mentorNames.length === 0) {
+      console.log(`Assigning default mentor for Learner: ${learner.fullName}`);
+      mentorNames.push("No mentor");
+    }
 
     console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
 
@@ -82,7 +73,7 @@ async function sprintChallenge5() {
       id: learner.id,
       fullName: learner.fullName,
       email: learner.email,
-      mentors: mentorNames, // This will be an array of mentor names
+      mentors: mentorNames, // Will contain mentor names or "No mentor"
     };
   });
 
