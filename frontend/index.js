@@ -119,7 +119,7 @@ async function sprintChallenge5() {
     email.textContent = learner.email;
 
     const mentorsHeading = document.createElement("h4");
-    mentorsHeading.classList.add("mentors-heading");
+    mentorsHeading.classList.add("mentors-heading", "closed"); // Add 'closed' class initially
     mentorsHeading.textContent = "Mentors";
 
     const mentorsList = document.createElement("ul");
@@ -140,12 +140,6 @@ async function sprintChallenge5() {
     card.appendChild(email);
     card.appendChild(mentorsHeading);
     card.appendChild(mentorsList);
-
-    if (mentorsHeading.classList.contains("open")) {
-      mentorsHeading.classList.replace("open", "closed");
-    } else {
-      mentorsHeading.classList.replace("closed", "open");
-    }
 
     // 👆 ==================== TASK 3 END ====================== 👆
 
