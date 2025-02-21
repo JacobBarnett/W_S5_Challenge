@@ -9,24 +9,24 @@ async function sprintChallenge5() {
   // 🧠 Use Axios to GET learners and mentors.
   // ❗ Use the variables `mentors` and `learners` to store the data.
   // ❗ Use the await keyword when using axios.
-  // const getLearners = async () => {
-  //   const response = await axios.get("http://localhost:3003/api/learners");
-  //   return response.data;
-  // };
+  const getLearners = async () => {
+    const response = await axios.get("http://localhost:3003/api/learners");
+    return response.data;
+  };
 
-  // const getMentors = async () => {
-  //   const response = await axios.get("http://localhost:3003/api/mentors");
-  //   return response.data;
-  // };
-  // const fetchData = async () => {
-  //   const learners = await getLearners(); // Get learners data
-  //   const mentors = await getMentors(); // Get mentors data
-  //   return { learners, mentors };
-  // };
+  const getMentors = async () => {
+    const response = await axios.get("http://localhost:3003/api/mentors");
+    return response.data;
+  };
+  const fetchData = async () => {
+    const learners = await getLearners(); // Get learners data
+    const mentors = await getMentors(); // Get mentors data
+    return { learners, mentors };
+  };
 
-  // fetchData().then(({ learners, mentors }) => {
-  //   // Continue with Task 2 below
-  // });
+  fetchData().then(({ learners, mentors }) => {
+    // Continue with Task 2 below
+  });
 
   // 👆 ==================== TASK 1 END ====================== 👆
 
@@ -44,26 +44,26 @@ async function sprintChallenge5() {
   //     "Grace Hopper"
   //   ]`
   // }
-  // fetchData().then(({ learners, mentors }) => {
-  //   const updatedLearners = learners.map((learner) => {
-  //     // Get the mentors' names for this learner
-  //     const mentorNames = learner.mentorIds
-  //       .map((mentorId) => {
-  //         const mentor = mentors.find((m) => m.id === mentorId); // Find the mentor by ID
-  //         return mentor ? mentor.fullName : null; // Return the mentor's full name
-  //       })
-  //       .filter(Boolean); // Remove null values if any mentor is not found
+  fetchData().then(({ learners, mentors }) => {
+    const updatedLearners = learners.map((learner) => {
+      // Get the mentors' names for this learner
+      const mentorNames = learner.mentorIds
+        .map((mentorId) => {
+          const mentor = mentors.find((m) => m.id === mentorId); // Find the mentor by ID
+          return mentor ? mentor.fullName : null; // Return the mentor's full name
+        })
+        .filter(Boolean); // Remove null values if any mentor is not found
 
-  //     return {
-  //       id: learner.id,
-  //       fullName: learner.fullName,
-  //       email: learner.email,
-  //       mentors: mentorNames,
-  //     };
-  //   });
+      return {
+        id: learner.id,
+        fullName: learner.fullName,
+        email: learner.email,
+        mentors: mentorNames,
+      };
+    });
 
-  //   console.log(updatedLearners); // Display the updated learners with mentor names
-  // });
+    console.log(updatedLearners); // Display the updated learners with mentor names
+  });
 
   // 👆 ==================== TASK 2 END ====================== 👆
 
