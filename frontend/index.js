@@ -119,7 +119,7 @@ async function sprintChallenge5() {
     email.textContent = learner.email;
 
     const mentorsHeading = document.createElement("h4");
-    mentorsHeading.classList.add("mentors-heading", "closed"); // Add 'closed' class initially
+    mentorsHeading.classList.add("mentors-heading"); // Add 'closed' class initially
     mentorsHeading.classList.add("closed");
     mentorsHeading.textContent = "Mentors";
 
