@@ -50,33 +50,42 @@ async function sprintChallenge5() {
     console.log(`Processing Learner: ${learner.fullName}`);
     console.log("Learner Data:", learner); // Log the entire learner object to inspect the structure
 
-    // Directly use the learner's mentors array
+    // Log mentors directly if available
+    console.log("Mentors for learner:", learner.mentors);
+
+    // If learner has mentors array (not ID-based)
     const mentorNames =
       learner.mentors && Array.isArray(learner.mentors)
-        ? learner.mentors.map((mentor) => mentor.fullName).filter(Boolean) // Map mentor objects to their full names
-        : []; // Fallback to an empty array if mentors is missing
+        ? learner.mentors
+            .map((mentor) => {
+              console.log(
+                `Found mentor for ${learner.fullName}:`,
+                mentor.fullName
+              );
+              return mentor.fullName;
+            })
+            .filter(Boolean) // Remove null or undefined values
+        : []; // If no mentors, fallback to empty array
 
-    // If no mentors were found, provide a default "No mentor"
+    // If no mentors found, assign "No mentor"
     if (mentorNames.length === 0) {
       console.log(`Assigning default mentor for Learner: ${learner.fullName}`);
       mentorNames.push("No mentor");
     }
 
     console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
-    console.log(
-      `Number of mentors for ${learner.fullName}:`,
-      mentorNames.length
-    ); // Log mentor count
 
+    // Return final learner object with mentor names
     return {
       id: learner.id,
       fullName: learner.fullName,
       email: learner.email,
-      mentors: mentorNames, // Store mentor names or "No mentor"
+      mentors: mentorNames, // List of mentor names or "No mentor"
     };
   });
 
   console.log("Combined Learners with Mentors:", combinedLearners);
+
   // 👆 ==================== TASK 2 END ====================== 👆
 
   const cardsContainer = document.querySelector(".cards");
