@@ -18,8 +18,8 @@ async function sprintChallenge5() {
     const response = await axios.get("http://localhost:3003/api/mentors");
     return response.data;
   };
-  let mentors = [getMentors]; // fix this
-  let learners = [getLearners]; // fix this
+  let mentors = await getMentors(); // Fix: Await and store the actual data
+  let learners = await getLearners(); // fix this
 
   // 👆 ==================== TASK 1 END ====================== 👆
 
