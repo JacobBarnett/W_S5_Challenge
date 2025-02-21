@@ -18,8 +18,8 @@ async function sprintChallenge5() {
     const response = await axios.get("http://localhost:3003/api/mentors");
     return response.data;
   };
-  let mentors = await getMentors(); // Fix: Await and store the actual data
-  let learners = await getLearners(); // fix this
+  let mentors = [getMentors]; // fix this
+  let learners = [getLearners]; // fix this
 
   // 👆 ==================== TASK 1 END ====================== 👆
 
@@ -37,23 +37,23 @@ async function sprintChallenge5() {
   //     "Grace Hopper"
   //   ]`
   // }
-  learners = learners.map((learner) => {
-    // For each learner, map mentor IDs to mentor full names
-    const mentorNames = learner.mentorIds.map((mentorId) => {
-      const mentor = mentors.find((m) => m.id === mentorId);
-      return mentor ? mentor.fullName : "Unknown Mentor"; // Handle case where mentor is not found
-    });
+  // learners = learners.map((learner) => {
+  //   // For each learner, map mentor IDs to mentor full names
+  //   const mentorNames = learner.mentorIds.map((mentorId) => {
+  //     const mentor = mentors.find((m) => m.id === mentorId);
+  //     return mentor ? mentor.fullName : "Unknown Mentor"; // Handle case where mentor is not found
+  //   });
 
-    // Return the learner object with fullName, email, and mentor names
-    return {
-      id: learner.id,
-      fullName: learner.fullName,
-      email: learner.email,
-      mentors: mentorNames,
-    };
-  });
+  //   // Return the learner object with fullName, email, and mentor names
+  //   return {
+  //     id: learner.id,
+  //     fullName: learner.fullName,
+  //     email: learner.email,
+  //     mentors: mentorNames,
+  //   };
+  // });
 
-  console.log(learners);
+  // console.log(learners);
   // 👆 ==================== TASK 2 END ====================== 👆
 
   const cardsContainer = document.querySelector(".cards");
