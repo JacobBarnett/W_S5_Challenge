@@ -48,9 +48,6 @@ async function sprintChallenge5() {
 
   const combinedLearners = learners.map((learner) => {
     console.log(`Processing Learner: ${learner.fullName}`);
-    console.log("Learner mentor IDs:", learner.mentorIds);
-
-    // Fallback: If `mentorIds` is undefined or empty, provide a default value
     const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
     if (mentorIds.length === 0) {
       console.log(`No mentor IDs found for Learner: ${learner.fullName}`);
@@ -71,25 +68,28 @@ async function sprintChallenge5() {
           return null;
         }
       })
-      .filter(Boolean); // Remove any null values (i.e., no mentor found)
+      .filter(Boolean); // Filter out null values (if no mentor was found)
 
-    console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
-    // If no mentors were found, we default to "No mentor"
+    // Add default if no mentors are found
     if (mentorNames.length === 0) {
       console.log(`Assigning default mentor for Learner: ${learner.fullName}`);
       mentorNames.push("No mentor");
     }
 
-    console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
+    console.log(
+      `Number of mentors for ${learner.fullName}:`,
+      mentorNames.length
+    ); // Log mentor count
 
     return {
       id: learner.id,
       fullName: learner.fullName,
       email: learner.email,
-      mentors: mentorNames, // Will contain mentor names or "No mentor"
+      mentors: mentorNames, // Will contain either actual mentor names or ["No mentor"]
     };
   });
 
+  console.log("Combined Learners with Mentors:", combinedLearners);
   console.log("Combined Learners with Mentors:", combinedLearners);
   // 👆 ==================== TASK 2 END ====================== 👆
 
