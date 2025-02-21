@@ -69,6 +69,8 @@ async function sprintChallenge5() {
   const info = document.querySelector(".info");
   info.textContent = "No learner is selected";
 
+  const learners = await fetchData();
+
   // Loop over each learner object
   for (let learner of learners) {
     const card = document.createElement("div"); // Create a card div for each learner
