@@ -48,36 +48,42 @@ async function sprintChallenge5() {
 
   const combinedLearners = learners.map((learner) => {
     console.log(`Processing Learner: ${learner.fullName}`);
-    console.log("Learner Data:", learner); // Log the entire learner object to inspect the structure
+    console.log("Learner Data:", learner);
 
     // Log the mentor IDs to ensure they are being read correctly
     console.log("Mentor IDs for learner:", learner.mentors);
 
     // Cross-reference mentor IDs with the mentors array to get full names
-    const mentorNames =
-      learner.mentors && Array.isArray(learner.mentors)
-        ? learner.mentors
-            .map((mentorId) => {
-              // Log each mentorId before attempting to find the mentor
-              console.log(`Looking for mentor with ID: ${mentorId}`);
+    const mentorNames = learner.mentorIds
+      .map((mentorId) => {
+        console.log(`Looking for mentor with ID: ${mentorId}`);
 
-              const mentor = mentors.find((m) => m.id === mentorId);
+        // Ensure both are numbers to avoid type mismatch issues
+        const mentor = mentors.find((m) => {
+          console.log(`Checking mentor with ID: ${m.id}`);
+          console.log(
+            `mentorId type: ${typeof mentorId}, mentor.id type: ${typeof m.id}`
+          );
 
-              if (mentor) {
-                console.log(
-                  `Found mentor for ${learner.fullName}:`,
-                  mentor.fullName
-                );
-                return mentor.fullName;
-              } else {
-                console.log(
-                  `No mentor found for Mentor ID: ${mentorId} (Learner: ${learner.fullName})`
-                );
-                return null; // Return null if no matching mentor is found
-              }
-            })
-            .filter(Boolean) // Filter out any null values
-        : []; // If there are no mentors, return an empty array
+          return m.id === mentorId; // Compare directly as numbers
+        });
+
+        if (mentor) {
+          console.log(
+            `Found mentor for ${learner.fullName}:`,
+            mentor.firstName + " " + mentor.lastName
+          );
+          return mentor.firstName + " " + mentor.lastName; // Use full name here
+        } else {
+          console.log(
+            `No mentor found for Mentor ID: ${mentorId} (Learner: ${learner.fullName})`
+          );
+          return null;
+        }
+      })
+      .filter(Boolean); // Filter out nulls (if no mentor is found)
+
+    []; // If there are no mentors, return an empty array
 
     // If no mentors found, assign a default "No mentor"
     if (mentorNames.length === 0) {
