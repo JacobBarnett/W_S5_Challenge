@@ -9,29 +9,40 @@ async function sprintChallenge5() {
   // 🧠 Use Axios to GET learners and mentors.
   const getLearners = async () => {
     const response = await axios.get("http://localhost:3003/api/learners");
+    console.log(response.data); // Log learners data for inspection
     return response.data;
   };
 
   const getMentors = async () => {
     const response = await axios.get("http://localhost:3003/api/mentors");
+    console.log(response.data); // Log mentors data for inspection
     return response.data;
   };
 
   // 👆 ==================== TASK 1 & 2 FIX ====================== 👆
 
-  // Await the results from both API calls
   let mentors = await getMentors(); // Fetch the mentors data
   let learners = await getLearners(); // Fetch the learners data
 
+  // Defensive check to ensure the data is not undefined
+  if (!Array.isArray(mentors) || !Array.isArray(learners)) {
+    throw new Error(
+      "The API response did not return an array for learners or mentors"
+    );
+  }
+
   // Combine learners and mentors - map mentor IDs to mentor names
   learners = learners.map((learner) => {
-    const mentorNames = learner.mentorIds
+    // Ensure mentorIds is an array even if it's missing or undefined
+    const mentorIds = learner.mentorIds || [];
+
+    // Safely map mentorIds to names
+    const mentorNames = mentorIds
       .map((mentorId) => {
-        // Find the mentor by ID
         const mentor = mentors.find((m) => m.id === mentorId);
         return mentor ? mentor.fullName : null; // Return mentor name or null if not found
       })
-      .filter((name) => name !== null); // Filter out null values in case some IDs are not found
+      .filter((name) => name !== null); // Filter out null values
 
     // Return the learner object with the correct structure
     return {
