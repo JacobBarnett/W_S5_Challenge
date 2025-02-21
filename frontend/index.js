@@ -7,23 +7,25 @@ async function sprintChallenge5() {
   // 👇 ==================== TASK 1 START ==================== 👇
 
   // 🧠 Use Axios to GET learners and mentors.
-  const getMentors = async () => {
-    try {
-      const response = await axios.get("http://localhost:3003/api/mentors");
-      return Array.isArray(response.data) ? response.data : [];
-    } catch (error) {
-      console.error("Error fetching mentors:", error);
-      return []; // Return empty array in case of error
-    }
-  };
-
   const getLearners = async () => {
     try {
       const response = await axios.get("http://localhost:3003/api/learners");
+      // Ensure that response.data is an array, if not, return an empty array
       return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
       console.error("Error fetching learners:", error);
-      return []; // Return empty array in case of error
+      return []; // Return an empty array if there's an error
+    }
+  };
+
+  const getMentors = async () => {
+    try {
+      const response = await axios.get("http://localhost:3003/api/mentors");
+      // Ensure that response.data is an array, if not, return an empty array
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+      console.error("Error fetching mentors:", error);
+      return []; // Return an empty array if there's an error
     }
   };
 
@@ -31,8 +33,12 @@ async function sprintChallenge5() {
   const mentors = await getMentors(); // Fix this: fetching mentors data
   const learners = await getLearners(); // Fix this: fetching learners data
 
-  console.log("Mentors:", mentors);
-  console.log("Learners:", learners);
+  // Check if both learners and mentors are valid arrays
+  if (!Array.isArray(learners) || !Array.isArray(mentors)) {
+    console.error("Data fetched is not in the expected format.");
+    return; // Exit early if either is not an array
+  }
+
   // 👆 ==================== TASK 1 END ====================== 👆
 
   // 👇 ==================== TASK 2 START ==================== 👇
@@ -41,24 +47,24 @@ async function sprintChallenge5() {
   // At this point, the learner objects only have the mentors' IDs.
   // We need to replace the mentor IDs with the mentor names.
 
-  const combinedLearners =
-    Array.isArray(learners) && Array.isArray(mentors)
-      ? learners.map((learner) => {
-          const mentorNames = learner.mentorIds
-            .map((mentorId) => {
-              const mentor = mentors.find((m) => m.id === mentorId);
-              return mentor ? mentor.fullName : null;
-            })
-            .filter(Boolean);
+  const combinedLearners = learners.map((learner) => {
+    // Make sure mentorIds exists and is an array
+    const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
 
-          return {
-            id: learner.id,
-            fullName: learner.fullName,
-            email: learner.email,
-            mentors: mentorNames,
-          };
-        })
-      : [];
+    const mentorNames = mentorIds
+      .map((mentorId) => {
+        const mentor = mentors.find((m) => m.id === mentorId);
+        return mentor ? mentor.fullName : null;
+      })
+      .filter(Boolean); // Filter out any null values (in case some mentorIds are invalid)
+
+    return {
+      id: learner.id,
+      fullName: learner.fullName,
+      email: learner.email,
+      mentors: mentorNames,
+    };
+  });
 
   // 👆 ==================== TASK 2 END ====================== 👆
 
