@@ -37,6 +37,7 @@ async function sprintChallenge5() {
   // We need to replace the mentor IDs with the mentor names.
 
   const combinedLearners = learners.map((learner) => {
+    console.log(`Learner: ${learner.fullName}, Mentor IDs:`, learner.mentorIds);
     const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
 
     const mentorNames = mentorIds
