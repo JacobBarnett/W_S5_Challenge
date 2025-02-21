@@ -58,8 +58,11 @@ async function sprintChallenge5() {
       learner.mentors && Array.isArray(learner.mentors)
         ? learner.mentors
             .map((mentorId) => {
-              // Look for a mentor in the mentors array with the matching ID
+              // Log each mentorId before attempting to find the mentor
+              console.log(`Looking for mentor with ID: ${mentorId}`);
+
               const mentor = mentors.find((m) => m.id === mentorId);
+
               if (mentor) {
                 console.log(
                   `Found mentor for ${learner.fullName}:`,
