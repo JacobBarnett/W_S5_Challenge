@@ -67,7 +67,7 @@ async function sprintChallenge5() {
   info.textContent = "No learner is selected";
 
   // Loop over each learner object
-  for (let learner of learners) {
+  for (let learner of learner) {
     const card = document.createElement("div"); // Create a card div for each learner
     card.classList.add("card"); // Add 'card' class to the div
 
