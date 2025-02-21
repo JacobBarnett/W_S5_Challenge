@@ -66,8 +66,7 @@ async function sprintChallenge5() {
     };
   });
 
-  console.log('Mentor names for learner', learner.fullName, mentorNames);
-
+  console.log("Mentor names for learner", learners.fullName, mentorNames);
 
   // 👆 ==================== TASK 2 END ====================== 👆
 
