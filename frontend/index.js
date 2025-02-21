@@ -22,42 +22,43 @@ async function sprintChallenge5() {
 
   // 👆 ==================== TASK 1 & 2 FIX ====================== 👆
 
-  let mentors = await getMentors(); // Fetch the mentors data
-  let learners = await getLearners(); // Fetch the learners data
+  // Assuming you're using Jest for testing
+  test("learners have mentors correctly mapped", async () => {
+    // First, get the data by calling the functions
+    const mentors = await getMentors();
+    const learners = await getLearners();
 
-  // Defensive check to ensure the data is not undefined
-  if (!Array.isArray(mentors) || !Array.isArray(learners)) {
-    throw new Error(
-      "The API response did not return an array for learners or mentors"
-    );
-  }
+    // Combine learners and mentors
+    const processedLearners = learners.map((learner) => {
+      const mentorIds = learner.mentorIds || [];
+      const mentorNames = mentorIds
+        .map((mentorId) => {
+          const mentor = mentors.find((m) => m.id === mentorId);
+          return mentor ? mentor.fullName : null;
+        })
+        .filter((name) => name !== null);
+      return {
+        id: learner.id,
+        fullName: learner.fullName,
+        email: learner.email,
+        mentors: mentorNames,
+      };
+    });
 
-  // Combine learners and mentors - map mentor IDs to mentor names
-  learners = learners.map((learner) => {
-    // Ensure mentorIds is an array even if it's missing or undefined
-    const mentorIds = learner.mentorIds || [];
+    // Now, 'processedLearners' will be your 'received' data
+    const expectedLearners = [
+      {
+        id: 6,
+        fullName: "Bob Johnson",
+        email: "bob.johnson@example.com",
+        mentors: ["Bill Gates", "Grace Hopper"],
+      },
+      // Add other expected learner objects here as needed
+    ];
 
-    // Safely map mentorIds to names
-    const mentorNames = mentorIds
-      .map((mentorId) => {
-        const mentor = mentors.find((m) => m.id === mentorId);
-        return mentor ? mentor.fullName : null; // Return mentor name or null if not found
-      })
-      .filter((name) => name !== null); // Filter out null values
-
-    // Return the learner object with the correct structure
-    return {
-      id: learner.id,
-      fullName: learner.fullName,
-      email: learner.email,
-      mentors: mentorNames,
-    };
+    // Perform the test with .toEqual() to check deep equality
+    expect(processedLearners).toEqual(expectedLearners);
   });
-
-  console.log("Processed Learners:", learners); // Log processed learners to inspect their structure
-
-  // Example of a deep equality check for the test:
-  expect(received).toBe(expected); // Use .toEqual instead of .toBe for deep equality comparison
 
   // 👇 ==================== TASK 3 ==================== 👇
 
