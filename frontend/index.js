@@ -51,7 +51,6 @@ async function sprintChallenge5() {
       console.error("Error fetching data:", error);
     }
   };
-
   {
     // Main rendering function
     const renderLearnersToDOM = async () => {
@@ -163,7 +162,6 @@ async function sprintChallenge5() {
         expect(processedLearners).toEqual(expectedLearners);
       });
     });
-
     // 👆 ==================== TASK 3 END ====================== 👆
 
     // 👆 WORK ONLY ABOVE THIS LINE 👆
