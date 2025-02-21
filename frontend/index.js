@@ -7,15 +7,16 @@ async function sprintChallenge5() {
   // 👇 ==================== TASK 1 START ==================== 👇
 
   // 🧠 Use Axios to GET learners and mentors.
+  // 🧠 Use Axios to GET learners and mentors.
   const getLearners = async () => {
     const response = await axios.get("http://localhost:3003/api/learners");
-    console.log(response.data); // Log learners data for inspection
+    console.log("Learners Data:", response.data); // Log the learners data for inspection
     return response.data;
   };
 
   const getMentors = async () => {
     const response = await axios.get("http://localhost:3003/api/mentors");
-    console.log(response.data); // Log mentors data for inspection
+    console.log("Mentors Data:", response.data); // Log the mentors data for inspection
     return response.data;
   };
 
@@ -53,7 +54,10 @@ async function sprintChallenge5() {
     };
   });
 
-  console.log(learners); // This will print the learners with their mentor names.
+  console.log("Processed Learners:", learners); // Log processed learners to inspect their structure
+
+  // Example of a deep equality check for the test:
+  expect(received).toEqual(expected); // Use .toEqual instead of .toBe for deep equality comparison
 
   // 👇 ==================== TASK 3 ==================== 👇
 
