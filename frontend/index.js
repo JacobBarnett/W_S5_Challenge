@@ -56,6 +56,7 @@ async function sprintChallenge5() {
         }
       })
       .filter(Boolean); // Filter out any null values (in case some mentorIds are invalid)
+    console.log("Mentors for learner:", learner.fullName, mentorNames);
 
     if (mentorNames.length === 0) {
       console.log(`No mentors found for learner: ${learner.fullName}`);
