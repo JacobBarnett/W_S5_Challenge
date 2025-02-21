@@ -141,6 +141,12 @@ async function sprintChallenge5() {
     card.appendChild(mentorsHeading);
     card.appendChild(mentorsList);
 
+    if (mentorsHeading.classList.contains("open")) {
+      mentorsHeading.classList.replace("open", "closed");
+    } else {
+      mentorsHeading.classList.replace("closed", "open");
+    }
+
     // 👆 ==================== TASK 3 END ====================== 👆
 
     // 👆 WORK ONLY ABOVE THIS LINE 👆
