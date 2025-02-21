@@ -7,6 +7,9 @@ async function sprintChallenge5() {
   // 👇 ==================== TASK 1 START ==================== 👇
 
   // 🧠 Use Axios to GET learners and mentors.
+  // ❗ Use the variables `mentors` and `learners` to store the data.
+  // ❗ Use the await keyword when using axios.
+
   const getLearners = async () => {
     try {
       const response = await axios.get("http://localhost:3003/api/learners");
@@ -43,6 +46,15 @@ async function sprintChallenge5() {
   // 🧠 Combine learners and mentors.
   // At this point, the learner objects only have the mentors' IDs.
   // We need to replace the mentor IDs with the mentor names.
+  // {
+  //   id: 6,
+  //   fullName: "Bob Johnson",
+  //   email: "bob.johnson@example.com",
+  //   mentors: [
+  //     "Bill Gates",
+  //     "Grace Hopper"
+  //   ]`
+  // }
 
   const combinedLearners = learners.map((learner) => {
     console.log(`Processing Learner: ${learner.fullName}`);
@@ -99,7 +111,13 @@ async function sprintChallenge5() {
 
   // 👇 ==================== TASK 3 START ==================== 👇
 
-  // Loop through the combined learners and create the DOM elements
+  // 🧠 Flesh out the elements that describe each learner
+  // ❗ Give the elements below their (initial) classes, textContent and proper nesting.
+  // ❗ Do not change the variable names, as the code that follows depends on those names.
+  // ❗ Also, loop over the mentors inside the learner object, creating an <li> element for each mentor.
+  // ❗ Fill each <li> with a mentor name, and append it to the <ul> mentorList.
+  // ❗ Inspect the mock site closely to understand what the initial texts and classes look like!
+
   for (let learner of combinedLearners) {
     const card = document.createElement("div");
     card.classList.add("card");
