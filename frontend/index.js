@@ -57,7 +57,7 @@ async function sprintChallenge5() {
   console.log("Processed Learners:", learners); // Log processed learners to inspect their structure
 
   // Example of a deep equality check for the test:
-  // expect(received).toEqual(expected); // Use .toEqual instead of .toBe for deep equality comparison
+  expect(received).toBe(expected); // Use .toEqual instead of .toBe for deep equality comparison
 
   // 👇 ==================== TASK 3 ==================== 👇
 
