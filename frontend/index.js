@@ -55,16 +55,15 @@ async function sprintChallenge5() {
 
     // Cross-reference mentor IDs with the mentors array to get full names
     const mentorNames =
-      Array.isArray(learner.mentorIds) && learner.mentorIds.length > 0
-        ? learner.mentorIds
+      Array.isArray(learner.mentors) && learner.mentors.length > 0
+        ? learner.mentors
             .map((mentorId) => {
               console.log(`Looking for mentor with ID: ${mentorId}`);
 
               // Ensure both are numbers to avoid type mismatch issues
-              const mentor = mentors.find((m) => {
-                console.log(`Checking mentor with ID: ${m.id}`);
-                return m.id === mentorId; // Compare directly as numbers
-              });
+              const mentor = mentors.find(
+                (m) => m.id === parseInt(mentorId, 10)
+              );
 
               if (mentor) {
                 console.log(
@@ -76,7 +75,7 @@ async function sprintChallenge5() {
                 console.log(
                   `No mentor found for Mentor ID: ${mentorId} (Learner: ${learner.fullName})`
                 );
-                return null;
+                return null; // No mentor found, return null
               }
             })
             .filter(Boolean) // Filter out nulls (if no mentor is found)
@@ -97,8 +96,6 @@ async function sprintChallenge5() {
       mentors: mentorNames, // Array of mentor names or "No mentor"
     };
   });
-
-  console.log("Combined Learners with Mentors:", combinedLearners);
 
   // 👆 ==================== TASK 2 END ====================== 👆
 
