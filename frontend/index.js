@@ -108,6 +108,11 @@ async function sprintChallenge5() {
     mentorsList.classList.add("mentors-list");
 
     mentorsList.style.display = "none";
+    expect(mentorsList.style.display).toBe("none");
+
+    // After clicking the mentors heading, mentors should be visible (if that's the expected behavior)
+    mentorsHeading.click();
+    expect(mentorsList.style.display).not.toBe("none");
 
     // Loop through the mentors and create <li> elements for each mentor
     learner.mentors.forEach((mentor) => {
