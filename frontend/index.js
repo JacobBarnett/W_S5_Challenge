@@ -7,7 +7,6 @@ async function sprintChallenge5() {
   // 👇 ==================== TASK 1 START ==================== 👇
 
   // 🧠 Use Axios to GET learners and mentors.
-  // 🧠 Use Axios to GET learners and mentors.
   const getLearners = async () => {
     const response = await axios.get("http://localhost:3003/api/learners");
     return response.data;
@@ -47,70 +46,107 @@ async function sprintChallenge5() {
         };
       });
 
-      console.log("Processed Learners:", processedLearners); // Log to see the result
-
-      // You can now use `processedLearners` further (e.g., render to DOM or return it)
       return processedLearners;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  // Call fetchData to ensure that learners and mentors are correctly defined
-  fetchData();
+  {
+    // Main rendering function
+    const renderLearnersToDOM = async () => {
+      const learners = await fetchData(); // Ensure data is fetched before rendering
+      const cardsContainer = document.querySelector(".cards");
+      const info = document.querySelector(".info");
+      info.textContent = "No learner is selected";
 
-  // If you need to call `fetchData` in a test case, you can do something like this:
-  // fetchData().then(processedLearners => { ... });
-  // Or if it's an async test, use `await` in the test case itself
+      // Loop over each learner object
+      for (let learner of learners) {
+        const card = document.createElement("div"); // Create a card div for each learner
+        card.classList.add("card");
 
-  // 👇 ==================== TASK 3 ==================== 👇
+        const heading = document.createElement("h3"); // Create the h3 for the learner's full name
+        heading.classList.add("learner-name");
+        heading.textContent = learner.fullName;
 
-  const cardsContainer = document.querySelector(".cards");
-  const info = document.querySelector(".info");
-  info.textContent = "No learner is selected";
+        const email = document.createElement("div"); // Create a div for the learner's email
+        email.classList.add("learner-email");
+        email.textContent = learner.email;
 
-  const learners = await fetchData();
+        const mentorsHeading = document.createElement("h4"); // Create an h4 for mentors list heading
+        mentorsHeading.classList.add("mentors-heading");
+        mentorsHeading.textContent = "Mentors";
 
-  // Loop over each learner object
-  for (let learner of learners) {
-    const card = document.createElement("div"); // Create a card div for each learner
-    card.classList.add("card"); // Add 'card' class to the div
+        const mentorsList = document.createElement("ul"); // Create a list to hold mentor names
+        mentorsList.classList.add("mentors-list");
 
-    const heading = document.createElement("h3"); // Create the h3 for the learner's full name
-    heading.classList.add("learner-name"); // Add class for styling
-    heading.textContent = learner.fullName; // Set the textContent to the learner's full name
+        // Loop over each mentor name and create a list item for each
+        for (let mentor of learner.mentors) {
+          const mentorItem = document.createElement("li"); // Create a list item for each mentor
+          mentorItem.classList.add("mentor-item");
+          mentorItem.textContent = mentor;
+          mentorsList.appendChild(mentorItem); // Append each mentor item to the mentor list
+        }
 
-    const email = document.createElement("div"); // Create a div for the learner's email
-    email.classList.add("learner-email"); // Add class for styling
-    email.textContent = learner.email; // Set the textContent to the learner's email
+        // Append all elements to the card div
+        card.appendChild(heading);
+        card.appendChild(email);
+        card.appendChild(mentorsHeading);
+        card.appendChild(mentorsList);
 
-    const mentorsHeading = document.createElement("h4"); // Create an h4 for mentors list heading
-    mentorsHeading.classList.add("mentors-heading"); // Add class for styling
-    mentorsHeading.textContent = "Mentors"; // Set the text content to "Mentors"
+        // Append the card to the container
+        cardsContainer.appendChild(card);
 
-    const mentorsList = document.createElement("ul"); // Create a list to hold mentor names
-    mentorsList.classList.add("mentors-list"); // Add class for styling
+        // Event listener to handle card interactions
+        card.addEventListener("click", (evt) => {
+          const mentorsHeading = card.querySelector("h4");
+          // critical booleans
+          const didClickTheMentors = evt.target === mentorsHeading;
+          const isCardSelected = card.classList.contains("selected");
 
-    // Loop over each mentor name and create a list item for each
-    for (let mentor of learner.mentors) {
-      const mentorItem = document.createElement("li"); // Create a list item for each mentor
-      mentorItem.classList.add("mentor-item"); // Add class for styling
-      mentorItem.textContent = mentor; // Set the text content to the mentor's name
-      mentorsList.appendChild(mentorItem); // Append each mentor item to the mentor list
-    }
+          // Reset all learner names, selected statuses, info message
+          document.querySelectorAll(".card").forEach((crd) => {
+            crd.classList.remove("selected");
+            crd.querySelector("h3").textContent = crd.dataset.fullName;
+          });
+          info.textContent = "No learner is selected";
 
-    // Append all elements to the card div
-    card.appendChild(heading);
-    card.appendChild(email);
-    card.appendChild(mentorsHeading);
-    card.appendChild(mentorsList);
+          // Conditional logic for click event
+          if (!didClickTheMentors) {
+            if (!isCardSelected) {
+              // Selecting the card:
+              card.classList.add("selected");
+              heading.textContent += `, ID ${learner.id}`;
+              info.textContent = `The selected learner is ${learner.fullName}`;
+            }
+          } else {
+            card.classList.add("selected");
+            if (mentorsHeading.classList.contains("open")) {
+              mentorsHeading.classList.replace("open", "closed");
+            } else {
+              mentorsHeading.classList.replace("closed", "open");
+            }
+            if (!isCardSelected) {
+              heading.textContent += `, ID ${learner.id}`;
+              info.textContent = `The selected learner is ${learner.fullName}`;
+            }
+          }
+        });
+      }
 
-    // Append the card to the container
-    cardsContainer.appendChild(card);
-    
+      const footer = document.querySelector("footer");
+      const currentYear = new Date().getFullYear();
+      footer.textContent = `© BLOOM INSTITUTE OF TECHNOLOGY ${currentYear}`;
+    };
+
+    // Call renderLearnersToDOM when the script is loaded
+    renderLearnersToDOM();
+
+    // TESTING (Keep the test cases inside the same file)
     describe("Challenge Tests", () => {
       test("Version of challenge is valid", () => {
-        // code to test if the version of the challenge is valid
+        // Test to check if the challenge version is valid
+        expect(true).toBe(true); // Just an example, could be used for checking things like file presence, etc.
       });
 
       test("learners have mentors correctly mapped", async () => {
