@@ -56,22 +56,25 @@ async function sprintChallenge5() {
     }
   };
 
-  test("learners have mentors correctly mapped", async () => {
-    // Wait for processed learners to be returned from fetchData
-    const processedLearners = await fetchData();
+  describe("Learner Mentor Mapping Tests", () => {
+    test("learners have mentors correctly mapped", async () => {
+      // Your test code for learners mapping
+      const processedLearners = await fetchData();
+      const expectedLearners = [
+        {
+          id: 6,
+          fullName: "Bob Johnson",
+          email: "bob.johnson@example.com",
+          mentors: ["Bill Gates", "Grace Hopper"],
+        },
+      ];
 
-    const expectedLearners = [
-      {
-        id: 6,
-        fullName: "Bob Johnson",
-        email: "bob.johnson@example.com",
-        mentors: ["Bill Gates", "Grace Hopper"],
-      },
-      // Add other expected learners here as needed
-    ];
+      expect(processedLearners).toEqual(expectedLearners);
+    });
 
-    // Use toEqual to compare the actual data and expected data
-    expect(processedLearners).toEqual(expectedLearners);
+    test("another test case", () => {
+      // Another separate test case
+    });
   });
 
   // Call fetchData to ensure that learners and mentors are correctly defined
