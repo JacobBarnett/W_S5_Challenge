@@ -18,44 +18,50 @@ async function sprintChallenge5() {
     return response.data;
   };
 
-  // 🧠 This function should be called to process the learners and mentors
-  const processLearnersAndMentors = async () => {
-    // Fetch mentors and learners
-    const mentors = await getMentors();
-    const learners = await getLearners();
+  // 🧠 Ensure learners and mentors are fetched correctly
+  const fetchData = async () => {
+    try {
+      // Wait for both API calls to resolve
+      const mentors = await getMentors();
+      const learners = await getLearners();
 
-    if (!Array.isArray(learners) || !Array.isArray(mentors)) {
-      throw new Error("The API response did not return valid data.");
+      if (!Array.isArray(learners) || !Array.isArray(mentors)) {
+        throw new Error("The API response did not return valid data.");
+      }
+
+      // Process the learners data
+      const processedLearners = learners.map((learner) => {
+        const mentorIds = learner.mentorIds || []; // Default to empty array if undefined
+        const mentorNames = mentorIds
+          .map((mentorId) => {
+            const mentor = mentors.find((m) => m.id === mentorId);
+            return mentor ? mentor.fullName : null;
+          })
+          .filter((name) => name !== null); // Filter out null values
+
+        return {
+          id: learner.id,
+          fullName: learner.fullName,
+          email: learner.email,
+          mentors: mentorNames,
+        };
+      });
+
+      console.log("Processed Learners:", processedLearners); // Log to see the result
+
+      // You can now use `processedLearners` further (e.g., render to DOM or return it)
+      return processedLearners;
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-
-    // Combine learners and mentors - map mentor IDs to mentor names
-    const processedLearners = learners.map((learner) => {
-      const mentorIds = learner.mentorIds || []; // fallback to empty array if undefined
-      const mentorNames = mentorIds
-        .map((mentorId) => {
-          const mentor = mentors.find((m) => m.id === mentorId);
-          return mentor ? mentor.fullName : null;
-        })
-        .filter((name) => name !== null); // Filter out null values
-      return {
-        id: learner.id,
-        fullName: learner.fullName,
-        email: learner.email,
-        mentors: mentorNames,
-      };
-    });
-
-    return processedLearners;
   };
 
-  // Now, you can call the function where needed
-  processLearnersAndMentors()
-    .then((processedLearners) => {
-      console.log("Processed Learners:", processedLearners); // Log to see the final result
-    })
-    .catch((error) => {
-      console.error("Error processing learners and mentors:", error);
-    });
+  // Call fetchData to ensure that learners and mentors are correctly defined
+  fetchData();
+
+  // If you need to call `fetchData` in a test case, you can do something like this:
+  // fetchData().then(processedLearners => { ... });
+  // Or if it's an async test, use `await` in the test case itself
 
   // 👇 ==================== TASK 3 ==================== 👇
 
