@@ -19,8 +19,8 @@ async function sprintChallenge5() {
     return response.data;
   };
   const fetchData = async () => {
-    const learners = await getLearners(); // Get learners data
-    const mentors = await getMentors(); // Get mentors data
+    let learners = await getLearners(); // Get learners data
+    let mentors = await getMentors(); // Get mentors data
     return { learners, mentors };
   };
 
