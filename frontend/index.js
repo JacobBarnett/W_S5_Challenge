@@ -14,7 +14,7 @@ async function sprintChallenge5() {
       return response.data;
     } catch (error) {
       console.error("Error fetching learners:", error);
-      return []; // Return an empty array on error
+      return [];
     }
   };
 
@@ -25,17 +25,15 @@ async function sprintChallenge5() {
       return response.data;
     } catch (error) {
       console.error("Error fetching mentors:", error);
-      return []; // Return an empty array on error
+      return [];
     }
   };
-  // We need to await both getLearners and getMentors and assign the results to variables
-  const mentors = await getMentors(); // Fix this: fetching mentors data
-  const learners = await getLearners(); // Fix this: fetching learners data
+  const mentors = await getMentors();
+  const learners = await getLearners();
 
-  // Check if both learners and mentors are valid arrays
   if (!Array.isArray(learners) || !Array.isArray(mentors)) {
     console.error("Data fetched is not in the expected format.");
-    return; // Exit early if either is not an array
+    return;
   }
 
   // 👆 ==================== TASK 1 END ====================== 👆
@@ -50,17 +48,14 @@ async function sprintChallenge5() {
     console.log(`Processing Learner: ${learner.fullName}`);
     console.log("Learner Data:", learner);
 
-    // Log the mentor IDs to ensure they are being read correctly
     console.log("Mentor IDs for learner:", learner.mentors);
 
-    // Cross-reference mentor IDs with the mentors array to get full names
     const mentorNames =
       Array.isArray(learner.mentors) && learner.mentors.length > 0
         ? learner.mentors
             .map((mentorId) => {
               console.log(`Looking for mentor with ID: ${mentorId}`);
 
-              // Ensure both are numbers to avoid type mismatch issues
               const mentor = mentors.find(
                 (m) => m.id === parseInt(mentorId, 10)
               );
@@ -70,18 +65,17 @@ async function sprintChallenge5() {
                   `Found mentor for ${learner.fullName}:`,
                   mentor.firstName + " " + mentor.lastName
                 );
-                return mentor.firstName + " " + mentor.lastName; // Use full name here
+                return mentor.firstName + " " + mentor.lastName;
               } else {
                 console.log(
                   `No mentor found for Mentor ID: ${mentorId} (Learner: ${learner.fullName})`
                 );
-                return null; // No mentor found, return null
+                return null;
               }
             })
-            .filter(Boolean) // Filter out nulls (if no mentor is found)
-        : []; // Return an empty array if no mentorIds exist or they're empty
+            .filter(Boolean)
+        : [];
 
-    // If no mentors found, assign a default "No mentor"
     if (mentorNames.length === 0) {
       console.log(`Assigning default mentor for Learner: ${learner.fullName}`);
       mentorNames.push("No mentor");
@@ -93,7 +87,7 @@ async function sprintChallenge5() {
       id: learner.id,
       fullName: learner.fullName,
       email: learner.email,
-      mentors: mentorNames, // Array of mentor names or "No mentor"
+      mentors: mentorNames,
     };
   });
 
@@ -127,7 +121,6 @@ async function sprintChallenge5() {
 
     mentorsList.style.display = "none";
 
-    // Loop through the mentors and create <li> elements for each mentor
     learner.mentors.forEach((mentor) => {
       const mentorItem = document.createElement("li");
       mentorItem.classList.add("mentor-item");
@@ -135,7 +128,6 @@ async function sprintChallenge5() {
       mentorsList.appendChild(mentorItem);
     });
 
-    // Append the elements to the card div
     card.appendChild(heading);
     card.appendChild(email);
     card.appendChild(mentorsHeading);
