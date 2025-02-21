@@ -38,28 +38,39 @@ async function sprintChallenge5() {
 
   const combinedLearners = learners.map((learner) => {
     console.log(`Learner: ${learner.fullName}, Mentor IDs:`, learner.mentorIds);
+
     const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
+
+    // Log mentors to see if they have the expected id
+    mentors.forEach((mentor) => {
+      console.log(`Mentor: ${mentor.fullName}, ID: ${mentor.id}`);
+    });
 
     const mentorNames = mentorIds
       .map((mentorId) => {
         const mentor = mentors.find((m) => m.id === mentorId);
 
         if (mentor) {
+          console.log(
+            `Found mentor: ${mentor.fullName} for learner: ${learner.fullName}`
+          );
           return mentor.fullName;
         } else {
+          console.log(
+            `No mentor found for ID: ${mentorId} (learner: ${learner.fullName})`
+          );
           return null;
         }
       })
-      .filter(Boolean); // Remove null values if no mentor was found
+      .filter(Boolean); // Remove null values
 
     console.log("Mentors for learner:", learner.fullName, mentorNames);
 
-    // Return an empty array instead of "No mentor" if no mentors are found
     return {
       id: learner.id,
       fullName: learner.fullName,
       email: learner.email,
-      mentors: mentorNames, // This will be an empty array if no mentors found
+      mentors: mentorNames, // Return an array of mentor names
     };
   });
 
