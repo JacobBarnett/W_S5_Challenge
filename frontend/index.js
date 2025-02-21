@@ -9,17 +9,24 @@ async function sprintChallenge5() {
   // 🧠 Use Axios to GET learners and mentors.
   // ❗ Use the variables `mentors` and `learners` to store the data.
   // ❗ Use the await keyword when using axios.
-  const getLearners = async () => {
-    const response = await axios.get("http://localhost:3003/api/learners");
-    return response.data;
-  };
+  // const getLearners = async () => {
+  //   const response = await axios.get("http://localhost:3003/api/learners");
+  //   return response.data;
+  // };
 
-  const getMentors = async () => {
-    const response = await axios.get("http://localhost:3003/api/mentors");
-    return response.data;
-  };
-  let mentors = [getMentors]; // fix this
-  let learners = [getLearners]; // fix this
+  // const getMentors = async () => {
+  //   const response = await axios.get("http://localhost:3003/api/mentors");
+  //   return response.data;
+  // };
+  // const fetchData = async () => {
+  //   const learners = await getLearners(); // Get learners data
+  //   const mentors = await getMentors(); // Get mentors data
+  //   return { learners, mentors };
+  // };
+
+  // fetchData().then(({ learners, mentors }) => {
+  //   // Continue with Task 2 below
+  // });
 
   // 👆 ==================== TASK 1 END ====================== 👆
 
@@ -37,30 +44,26 @@ async function sprintChallenge5() {
   //     "Grace Hopper"
   //   ]`
   // }
-  const fetchData = async () => {
-    try {
-      const learners = await getLearners();
-      const mentors = await getMentors();
-      const mentorIdToName = mentors.reduce((acc, mentor) => {
-        acc[mentor.id] = mentor.fullName;
-        return acc;
-      }, {});
+  // fetchData().then(({ learners, mentors }) => {
+  //   const updatedLearners = learners.map((learner) => {
+  //     // Get the mentors' names for this learner
+  //     const mentorNames = learner.mentorIds
+  //       .map((mentorId) => {
+  //         const mentor = mentors.find((m) => m.id === mentorId); // Find the mentor by ID
+  //         return mentor ? mentor.fullName : null; // Return the mentor's full name
+  //       })
+  //       .filter(Boolean); // Remove null values if any mentor is not found
 
-      const updatedLearners = learners.map((learner) => {
-        const mentorNames = learner.mentorIds.map(
-          (mentorId) => mentorIdToName[mentorId]
-        );
-        return {
-          ...learner,
-          mentors: mentorNames,
-        };
-      });
-      return updatedLearners;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      return [];
-    }
-  };
+  //     return {
+  //       id: learner.id,
+  //       fullName: learner.fullName,
+  //       email: learner.email,
+  //       mentors: mentorNames,
+  //     };
+  //   });
+
+  //   console.log(updatedLearners); // Display the updated learners with mentor names
+  // });
 
   // 👆 ==================== TASK 2 END ====================== 👆
 
@@ -71,44 +74,6 @@ async function sprintChallenge5() {
   // 👇 ==================== TASK 3 START ==================== 👇
 
   for (let learner of learners) {
-    const renderLearners = async () => {
-      const learners = await fetchData();
-
-      const cardsContainer = document.querySelector(".cards");
-      const info = document.querySelector(".info");
-      info.textContent = "No learner is selected";
-
-      learners.forEach((learner) => {
-        const card = document.createElement("div");
-        card.classList.add("card");
-
-        const heading = document.createElement("h3");
-        heading.textContent = learner.fullName;
-
-        const email = document.createElement("div");
-        email.classList.add("email");
-        email.textContent = learner.email;
-
-        const mentorsHeading = document.createElement("h4");
-        mentorsHeading.textContent = "Mentors";
-        const mentorsList = document.createElement("ul");
-
-        learner.mentors.forEach((mentor) => {
-          const mentorItem = document.createElement("li");
-          mentorItem.textContent = mentor;
-          mentorsList.appendChild(mentorItem);
-        });
-
-        card.appendChild(heading);
-        card.appendChild(email);
-        card.appendChild(mentorsHeading);
-        card.appendChild(mentorsList);
-
-        cardsContainer.appendChild(card);
-      });
-    };
-
-    renderLearners();
     // looping over each learner object
 
     // 🧠 Flesh out the elements that describe each learner
