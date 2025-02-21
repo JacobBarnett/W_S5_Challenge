@@ -56,23 +56,6 @@ async function sprintChallenge5() {
     }
   };
 
-  describe("Learner Mentor Mapping Tests", () => {
-    test("learners have mentors correctly mapped", async () => {
-      // Your test code for learners mapping
-      const processedLearners = await fetchData();
-      const expectedLearners = [
-        {
-          id: 6,
-          fullName: "Bob Johnson",
-          email: "bob.johnson@example.com",
-          mentors: ["Bill Gates", "Grace Hopper"],
-        },
-      ];
-
-      expect(processedLearners).toEqual(expectedLearners);
-    });
-  });
-
   // Call fetchData to ensure that learners and mentors are correctly defined
   fetchData();
 
@@ -124,6 +107,26 @@ async function sprintChallenge5() {
 
     // Append the card to the container
     cardsContainer.appendChild(card);
+    
+    describe("Challenge Tests", () => {
+      test("Version of challenge is valid", () => {
+        // code to test if the version of the challenge is valid
+      });
+
+      test("learners have mentors correctly mapped", async () => {
+        const processedLearners = await fetchData();
+        const expectedLearners = [
+          {
+            id: 6,
+            fullName: "Bob Johnson",
+            email: "bob.johnson@example.com",
+            mentors: ["Bill Gates", "Grace Hopper"],
+          },
+        ];
+
+        expect(processedLearners).toEqual(expectedLearners);
+      });
+    });
 
     // 👆 ==================== TASK 3 END ====================== 👆
 
