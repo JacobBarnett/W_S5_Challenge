@@ -48,38 +48,21 @@ async function sprintChallenge5() {
 
   const combinedLearners = learners.map((learner) => {
     console.log(`Processing Learner: ${learner.fullName}`);
-    console.log("Learner mentor IDs:", learner.mentorIds); // Log mentor IDs to see what's happening
+    console.log("Learner Data:", learner); // Log the entire learner object to inspect the structure
 
-    const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
-    if (mentorIds.length === 0) {
-      console.log(`No mentor IDs found for Learner: ${learner.fullName}`);
-    }
+    // Directly use the learner's mentors array
+    const mentorNames =
+      learner.mentors && Array.isArray(learner.mentors)
+        ? learner.mentors.map((mentor) => mentor.fullName).filter(Boolean) // Map mentor objects to their full names
+        : []; // Fallback to an empty array if mentors is missing
 
-    const mentorNames = mentorIds
-      .map((mentorId) => {
-        const mentor = mentors.find((m) => m.id === mentorId);
-        if (mentor) {
-          console.log(
-            `Found Mentor: ${mentor.fullName} for Learner: ${learner.fullName}`
-          );
-          return mentor.fullName;
-        } else {
-          console.log(
-            `No Mentor found for Mentor ID: ${mentorId} (Learner: ${learner.fullName})`
-          );
-          return null;
-        }
-      })
-      .filter(Boolean); // Filter out null values (if no mentor was found)
-
-    // Add default if no mentors are found
+    // If no mentors were found, provide a default "No mentor"
     if (mentorNames.length === 0) {
       console.log(`Assigning default mentor for Learner: ${learner.fullName}`);
       mentorNames.push("No mentor");
     }
 
     console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
-
     console.log(
       `Number of mentors for ${learner.fullName}:`,
       mentorNames.length
@@ -89,11 +72,10 @@ async function sprintChallenge5() {
       id: learner.id,
       fullName: learner.fullName,
       email: learner.email,
-      mentors: mentorNames, // Will contain either actual mentor names or ["No mentor"]
+      mentors: mentorNames, // Store mentor names or "No mentor"
     };
   });
 
-  console.log("Combined Learners with Mentors:", combinedLearners);
   console.log("Combined Learners with Mentors:", combinedLearners);
   // 👆 ==================== TASK 2 END ====================== 👆
 
