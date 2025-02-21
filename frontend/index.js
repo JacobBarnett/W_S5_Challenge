@@ -39,6 +39,8 @@ async function sprintChallenge5() {
   const combinedLearners = learners.map((learner) => {
     console.log(`Processing Learner: ${learner.fullName}`);
     console.log("Learner mentor IDs:", learner.mentorIds);
+
+    // Fallback: If `mentorIds` is undefined or empty, provide a default value
     const mentorIds = Array.isArray(learner.mentorIds) ? learner.mentorIds : [];
     if (mentorIds.length === 0) {
       console.log(`No mentor IDs found for Learner: ${learner.fullName}`);
