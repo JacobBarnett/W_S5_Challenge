@@ -6,86 +6,86 @@ async function sprintChallenge5() {
 
   // 👇 ==================== TASK 1 START ==================== 👇
 
- // 🧠 Use Axios to GET learners and mentors.
-const getLearners = async () => {
-  const response = await axios.get("http://localhost:3003/api/learners");
-  return response.data;
-};
-
-const getMentors = async () => {
-  const response = await axios.get("http://localhost:3003/api/mentors");
-  return response.data;
-};
-
-// 👆 ==================== TASK 1 & 2 FIX ====================== 👆
-
-// Await the results from both API calls
-let mentors = await getMentors(); // Fetch the mentors data
-let learners = await getLearners(); // Fetch the learners data
-
-// Combine learners and mentors - map mentor IDs to mentor names
-learners = learners.map(learner => {
-  const mentorNames = learner.mentorIds.map(mentorId => {
-    // Find the mentor by ID
-    const mentor = mentors.find(m => m.id === mentorId);
-    return mentor ? mentor.fullName : null; // Return mentor name or null if not found
-  }).filter(name => name !== null); // Filter out null values in case some IDs are not found
-
-  // Return the learner object with the correct structure
-  return {
-    id: learner.id,
-    fullName: learner.fullName,
-    email: learner.email,
-    mentors: mentorNames
+  // 🧠 Use Axios to GET learners and mentors.
+  const getLearners = async () => {
+    const response = await axios.get("http://localhost:3003/api/learners");
+    return response.data;
   };
-});
 
-console.log(learners); // This will print the learners with their mentor names.
+  const getMentors = async () => {
+    const response = await axios.get("http://localhost:3003/api/mentors");
+    return response.data;
+  };
 
-// 👇 ==================== TASK 3 ==================== 👇
+  // 👆 ==================== TASK 1 & 2 FIX ====================== 👆
 
-const cardsContainer = document.querySelector(".cards");
-const info = document.querySelector(".info");
-info.textContent = "No learner is selected";
+  // Await the results from both API calls
+  let mentors = await getMentors(); // Fetch the mentors data
+  let learners = await getLearners(); // Fetch the learners data
 
-// Loop over each learner object
-for (let learner of learners) {
-  const card = document.createElement("div"); // Create a card div for each learner
-  card.classList.add("card"); // Add 'card' class to the div
-  
-  const heading = document.createElement("h3"); // Create the h3 for the learner's full name
-  heading.classList.add("learner-name"); // Add class for styling
-  heading.textContent = learner.fullName; // Set the textContent to the learner's full name
-  
-  const email = document.createElement("div"); // Create a div for the learner's email
-  email.classList.add("learner-email"); // Add class for styling
-  email.textContent = learner.email; // Set the textContent to the learner's email
-  
-  const mentorsHeading = document.createElement("h4"); // Create an h4 for mentors list heading
-  mentorsHeading.classList.add("mentors-heading"); // Add class for styling
-  mentorsHeading.textContent = "Mentors"; // Set the text content to "Mentors"
-  
-  const mentorsList = document.createElement("ul"); // Create a list to hold mentor names
-  mentorsList.classList.add("mentors-list"); // Add class for styling
+  // Combine learners and mentors - map mentor IDs to mentor names
+  learners = learners.map((learner) => {
+    const mentorNames = learner.mentorIds
+      .map((mentorId) => {
+        // Find the mentor by ID
+        const mentor = mentors.find((m) => m.id === mentorId);
+        return mentor ? mentor.fullName : null; // Return mentor name or null if not found
+      })
+      .filter((name) => name !== null); // Filter out null values in case some IDs are not found
 
-  // Loop over each mentor name and create a list item for each
-  for (let mentor of learner.mentors) {
-    const mentorItem = document.createElement("li"); // Create a list item for each mentor
-    mentorItem.classList.add("mentor-item"); // Add class for styling
-    mentorItem.textContent = mentor; // Set the text content to the mentor's name
-    mentorsList.appendChild(mentorItem); // Append each mentor item to the mentor list
-  }
-  
-  // Append all elements to the card div
-  card.appendChild(heading);
-  card.appendChild(email);
-  card.appendChild(mentorsHeading);
-  card.appendChild(mentorsList);
+    // Return the learner object with the correct structure
+    return {
+      id: learner.id,
+      fullName: learner.fullName,
+      email: learner.email,
+      mentors: mentorNames,
+    };
+  });
 
-  // Append the card to the container
-  cardsContainer.appendChild(card);
-}
+  console.log(learners); // This will print the learners with their mentor names.
 
+  // 👇 ==================== TASK 3 ==================== 👇
+
+  const cardsContainer = document.querySelector(".cards");
+  const info = document.querySelector(".info");
+  info.textContent = "No learner is selected";
+
+  // Loop over each learner object
+  for (let learner of learners) {
+    const card = document.createElement("div"); // Create a card div for each learner
+    card.classList.add("card"); // Add 'card' class to the div
+
+    const heading = document.createElement("h3"); // Create the h3 for the learner's full name
+    heading.classList.add("learner-name"); // Add class for styling
+    heading.textContent = learner.fullName; // Set the textContent to the learner's full name
+
+    const email = document.createElement("div"); // Create a div for the learner's email
+    email.classList.add("learner-email"); // Add class for styling
+    email.textContent = learner.email; // Set the textContent to the learner's email
+
+    const mentorsHeading = document.createElement("h4"); // Create an h4 for mentors list heading
+    mentorsHeading.classList.add("mentors-heading"); // Add class for styling
+    mentorsHeading.textContent = "Mentors"; // Set the text content to "Mentors"
+
+    const mentorsList = document.createElement("ul"); // Create a list to hold mentor names
+    mentorsList.classList.add("mentors-list"); // Add class for styling
+
+    // Loop over each mentor name and create a list item for each
+    for (let mentor of learner.mentors) {
+      const mentorItem = document.createElement("li"); // Create a list item for each mentor
+      mentorItem.classList.add("mentor-item"); // Add class for styling
+      mentorItem.textContent = mentor; // Set the text content to the mentor's name
+      mentorsList.appendChild(mentorItem); // Append each mentor item to the mentor list
+    }
+
+    // Append all elements to the card div
+    card.appendChild(heading);
+    card.appendChild(email);
+    card.appendChild(mentorsHeading);
+    card.appendChild(mentorsList);
+
+    // Append the card to the container
+    cardsContainer.appendChild(card);
 
     // 👆 ==================== TASK 3 END ====================== 👆
 
