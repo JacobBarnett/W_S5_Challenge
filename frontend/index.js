@@ -8,27 +8,16 @@ async function sprintChallenge5() {
 
   // 🧠 Use Axios to GET learners and mentors.
   const getLearners = async () => {
-    try {
-      const response = await axios.get("http://localhost:3003/api/learners");
-      // Ensure that response.data is an array, if not, return an empty array
-      return Array.isArray(response.data) ? response.data : [];
-    } catch (error) {
-      console.error("Error fetching learners:", error);
-      return []; // Return an empty array if there's an error
-    }
+    const response = await axios.get("http://localhost:3003/api/learners");
+    console.log("Fetched learners:", response.data);
+    return response.data;
   };
 
   const getMentors = async () => {
-    try {
-      const response = await axios.get("http://localhost:3003/api/mentors");
-      // Ensure that response.data is an array, if not, return an empty array
-      return Array.isArray(response.data) ? response.data : [];
-    } catch (error) {
-      console.error("Error fetching mentors:", error);
-      return []; // Return an empty array if there's an error
-    }
+    const response = await axios.get("http://localhost:3003/api/mentors");
+    console.log("Fetched mentors:", response.data);
+    return response.data;
   };
-
   // We need to await both getLearners and getMentors and assign the results to variables
   const mentors = await getMentors(); // Fix this: fetching mentors data
   const learners = await getLearners(); // Fix this: fetching learners data
@@ -65,8 +54,6 @@ async function sprintChallenge5() {
       mentors: mentorNames,
     };
   });
-
-  console.log("Mentor names for learner", learners.fullName, mentorNames);
 
   // 👆 ==================== TASK 2 END ====================== 👆
 
