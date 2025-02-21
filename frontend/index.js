@@ -56,6 +56,24 @@ async function sprintChallenge5() {
     }
   };
 
+  test("learners have mentors correctly mapped", async () => {
+    // Wait for processed learners to be returned from fetchData
+    const processedLearners = await fetchData();
+
+    const expectedLearners = [
+      {
+        id: 6,
+        fullName: "Bob Johnson",
+        email: "bob.johnson@example.com",
+        mentors: ["Bill Gates", "Grace Hopper"],
+      },
+      // Add other expected learners here as needed
+    ];
+
+    // Use toEqual to compare the actual data and expected data
+    expect(processedLearners).toEqual(expectedLearners);
+  });
+
   // Call fetchData to ensure that learners and mentors are correctly defined
   fetchData();
 
