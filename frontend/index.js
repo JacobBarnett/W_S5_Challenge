@@ -43,9 +43,24 @@ async function sprintChallenge5() {
     const mentorNames = mentorIds
       .map((mentorId) => {
         const mentor = mentors.find((m) => m.id === mentorId);
-        return mentor ? mentor.fullName : null;
+        if (mentor) {
+          console.log(
+            `Found mentor: ${mentor.fullName} for learner: ${learner.fullName}`
+          );
+          return mentor.fullName;
+        } else {
+          console.log(
+            `No mentor found for ID: ${mentorId} (learner: ${learner.fullName})`
+          );
+          return null;
+        }
       })
       .filter(Boolean); // Filter out any null values (in case some mentorIds are invalid)
+
+    if (mentorNames.length === 0) {
+      console.log(`No mentors found for learner: ${learner.fullName}`);
+      mentorNames.push("No mentor"); // Add a fallback message
+    }
 
     return {
       id: learner.id,
