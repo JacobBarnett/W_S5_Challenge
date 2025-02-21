@@ -71,10 +71,6 @@ async function sprintChallenge5() {
 
       expect(processedLearners).toEqual(expectedLearners);
     });
-
-    test("another test case", () => {
-      // Another separate test case
-    });
   });
 
   // Call fetchData to ensure that learners and mentors are correctly defined
