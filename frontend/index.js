@@ -61,8 +61,9 @@ async function sprintChallenge5() {
           return null;
         }
       })
-      .filter(Boolean); // Remove nulls
+      .filter(Boolean); // Remove any null values (i.e., no mentor found)
 
+    console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
     // If no mentors were found, we default to "No mentor"
     if (mentorNames.length === 0) {
       console.log(`Assigning default mentor for Learner: ${learner.fullName}`);
@@ -108,11 +109,6 @@ async function sprintChallenge5() {
     mentorsList.classList.add("mentors-list");
 
     mentorsList.style.display = "none";
-    expect(mentorsList.style.display).toBe("none");
-
-    // After clicking the mentors heading, mentors should be visible (if that's the expected behavior)
-    mentorsHeading.click();
-    expect(mentorsList.style.display).not.toBe("none");
 
     // Loop through the mentors and create <li> elements for each mentor
     learner.mentors.forEach((mentor) => {
