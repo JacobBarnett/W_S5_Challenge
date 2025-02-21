@@ -66,6 +66,9 @@ async function sprintChallenge5() {
     };
   });
 
+  console.log('Mentor names for learner', learner.fullName, mentorNames);
+
+
   // 👆 ==================== TASK 2 END ====================== 👆
 
   const cardsContainer = document.querySelector(".cards");
