@@ -8,15 +8,25 @@ async function sprintChallenge5() {
 
   // 🧠 Use Axios to GET learners and mentors.
   const getLearners = async () => {
-    const response = await axios.get("http://localhost:3003/api/learners");
-    console.log("Fetched learners:", response.data);
-    return response.data;
+    try {
+      const response = await axios.get("http://localhost:3003/api/learners");
+      console.log("Fetched learners:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching learners:", error);
+      return []; // Return an empty array on error
+    }
   };
 
   const getMentors = async () => {
-    const response = await axios.get("http://localhost:3003/api/mentors");
-    console.log("Fetched mentors:", response.data);
-    return response.data;
+    try {
+      const response = await axios.get("http://localhost:3003/api/mentors");
+      console.log("Fetched mentors:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching mentors:", error);
+      return []; // Return an empty array on error
+    }
   };
   // We need to await both getLearners and getMentors and assign the results to variables
   const mentors = await getMentors(); // Fix this: fetching mentors data
@@ -80,6 +90,7 @@ async function sprintChallenge5() {
     };
   });
 
+  console.log("Combined Learners with Mentors:", combinedLearners);
   // 👆 ==================== TASK 2 END ====================== 👆
 
   const cardsContainer = document.querySelector(".cards");
