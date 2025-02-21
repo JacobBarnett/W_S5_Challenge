@@ -120,6 +120,7 @@ async function sprintChallenge5() {
 
     const mentorsHeading = document.createElement("h4");
     mentorsHeading.classList.add("mentors-heading", "closed"); // Add 'closed' class initially
+    mentorsHeading.classList.add("closed");
     mentorsHeading.textContent = "Mentors";
 
     const mentorsList = document.createElement("ul");
