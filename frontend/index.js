@@ -50,24 +50,33 @@ async function sprintChallenge5() {
     console.log(`Processing Learner: ${learner.fullName}`);
     console.log("Learner Data:", learner); // Log the entire learner object to inspect the structure
 
-    // Log mentors directly if available
-    console.log("Mentors for learner:", learner.mentors);
+    // Log the mentor IDs to ensure they are being read correctly
+    console.log("Mentor IDs for learner:", learner.mentors);
 
-    // If learner has mentors array (not ID-based)
+    // Cross-reference mentor IDs with the mentors array to get full names
     const mentorNames =
       learner.mentors && Array.isArray(learner.mentors)
         ? learner.mentors
-            .map((mentor) => {
-              console.log(
-                `Found mentor for ${learner.fullName}:`,
-                mentor.fullName
-              );
-              return mentor.fullName;
+            .map((mentorId) => {
+              // Look for a mentor in the mentors array with the matching ID
+              const mentor = mentors.find((m) => m.id === mentorId);
+              if (mentor) {
+                console.log(
+                  `Found mentor for ${learner.fullName}:`,
+                  mentor.fullName
+                );
+                return mentor.fullName;
+              } else {
+                console.log(
+                  `No mentor found for Mentor ID: ${mentorId} (Learner: ${learner.fullName})`
+                );
+                return null; // Return null if no matching mentor is found
+              }
             })
-            .filter(Boolean) // Remove null or undefined values
-        : []; // If no mentors, fallback to empty array
+            .filter(Boolean) // Filter out any null values
+        : []; // If there are no mentors, return an empty array
 
-    // If no mentors found, assign "No mentor"
+    // If no mentors found, assign a default "No mentor"
     if (mentorNames.length === 0) {
       console.log(`Assigning default mentor for Learner: ${learner.fullName}`);
       mentorNames.push("No mentor");
@@ -75,12 +84,11 @@ async function sprintChallenge5() {
 
     console.log(`Final Mentors for ${learner.fullName}:`, mentorNames);
 
-    // Return final learner object with mentor names
     return {
       id: learner.id,
       fullName: learner.fullName,
       email: learner.email,
-      mentors: mentorNames, // List of mentor names or "No mentor"
+      mentors: mentorNames, // Array of mentor names or "No mentor"
     };
   });
 
